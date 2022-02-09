@@ -12,6 +12,7 @@ module Simpler
       @response = Rack::Response.new
       @type = env['PATH_INFO'].split('.')[1]
       @request_type = env['REQUEST_METHOD']
+      @request.env['simpler.params'] = find_params(env['PATH_INFO'])
     end
 
     def make_response(action)
@@ -26,6 +27,34 @@ module Simpler
     end
 
     private
+
+    def find_params(path)
+      path = path.split('.')[0].split('/')
+      params = {}
+      i = 0
+      hash_value =""
+      path.each do |element|
+        if i%1==0 && i.to_i.even?
+          params[hash_value] = element if i > 0
+        else
+          hash_value = find_hash_value(i, element)
+        end
+       i = i+1
+      end
+      params
+    end
+
+    def find_hash_value(i, element)
+      if i == 1
+        'id'.to_sym
+      else
+        (element + "_id").to_sym
+      end
+    end
+
+    def params
+     @request.params.merge!(@request.env['simpler.params'])
+    end
 
     def extract_name
       self.class.name.match('(?<name>.+)Controller')[:name].downcase
