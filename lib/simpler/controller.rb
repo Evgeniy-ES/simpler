@@ -11,8 +11,10 @@ module Simpler
       @request = Rack::Request.new(env)
       @response = Rack::Response.new
       @type = env['PATH_INFO'].split('.')[1]
+      @type = "html" if @type.nil?
       @request_type = env['REQUEST_METHOD']
-      @request.env['simpler.params'] = find_params(env['PATH_INFO'])
+      puts("env['QUERY_STRING'] = #{env['QUERY_STRING']}")
+      @request.env['simpler.params'] = find_params(env['PATH_INFO'].split('.')[0], env['QUERY_STRING'].split('.')[0])
     end
 
     def make_response(action)
@@ -28,9 +30,24 @@ module Simpler
 
     private
 
-    def find_params(path)
-      path = path.split('.')[0].split('/')
+    def record_params(query_string)
       params = {}
+      if query_string != nil
+        i=0
+        query_string = query_string.split('=')
+        while i < query_string.length - 1  do
+          params[query_string[i]] = query_string[i+1]
+          i = i + 2
+      	end
+      end
+      params
+    end
+
+    def find_params(path, query_string)
+      params = record_params(query_string)
+      path = path.split('?')[0] if path.include? '?'
+      path = path.split('/')
+
       i = 0
       hash_value =""
       path.each do |element|

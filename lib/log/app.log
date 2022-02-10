@@ -1,0 +1,16 @@
+I, [2022-02-10T14:41:31.231900 #9528]  INFO -- : Request: GET /tests.text
+Handler: TestsController#index
+Params: {}
+Response: 200 text/plain /tests.text/index.text.erb
+I, [2022-02-10T14:41:37.038935 #9528]  INFO -- : Request: GET /tests
+Handler: TestsController#index
+Params: {}
+Response: 200 text/html /tests/index.html.erb
+I, [2022-02-10T14:41:42.988692 #9528]  INFO -- : Request: GET /tests/3
+Handler: TestsController#show
+Params: {:id=>"3"}
+Response: 200 text/html /tests/3/show.html.erb
+I, [2022-02-10T14:41:59.649514 #9528]  INFO -- : Request: GET /tests?cat=backend.html
+Handler: TestsController#index
+Params: {"cat"=>"backend"}
+Response: 200 text/html /tests/index.html.erb

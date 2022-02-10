@@ -24,6 +24,7 @@ module Simpler
       end
 
       def find_path(path)
+        path = path.split('?')[0] if path.include? '?'
         path_need = ""
         element_old = ""
         for i in 1..path.length - 1 do
