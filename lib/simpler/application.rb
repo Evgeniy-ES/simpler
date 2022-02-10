@@ -23,6 +23,7 @@ module Simpler
     end
 
     def call(env)
+      puts(env)
       route = @router.route_for(env)
       controller = route.controller.new(env)
       action = route.action
